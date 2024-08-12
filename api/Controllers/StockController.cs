@@ -20,9 +20,14 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-            var stocksList = await _stockRepo.GetAllAsync(query);
-            var stocks = stocksList.Select(s => s.ToStockDto());
-            return Ok(stocks);
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var stocks = await _stockRepo.GetAllAsync(query);
+            var stocksDto = stocks.Select(s => s.ToStockDto()).ToList();
+            return Ok(stocksDto);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute]int id)
