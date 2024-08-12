@@ -34,6 +34,7 @@ namespace api.Repository
 
         public async Task<List<Comment>> GetAllAsync()
         {
+            //Comment here
             return await _context.Comments.Include(a => a.AppUser).ToListAsync();
         }
 
